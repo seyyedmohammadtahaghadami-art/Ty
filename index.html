@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b1020"><meta name="description" content="TYPO Real — PDF/Image to editable DOCX reconstruction engine">
+<link rel="manifest" href="manifest.json"><link rel="icon" href="assets/icons/icon.svg">
+<link rel="stylesheet" href="css/style.css">
+<title>TYPO Real — تبدیل واقعی PDF به Word</title>
+</head>
+<body>
+<header class="topbar"><div class="brand"><img src="assets/icons/icon.svg"><div><b>TYPO Real</b><small>Document Reconstruction Engine</small></div></div><span id="engineState" class="pill">آماده</span></header>
+<main>
+<section class="hero"><div><span class="eyebrow">PDF / PNG / JPG → DOCX</span><h1>مبدل واقعی PDF به Word</h1><p>استخراج متن PDF متنی، OCR برای اسکن، بازسازی RTL/LTR، پاراگراف و جدول به‌صورت محافظه‌کارانه و ساخت DOCX واقعی.</p></div></section>
+<section class="panel">
+<label class="drop" id="dropZone"><input id="fileInput" type="file" accept="application/pdf,image/png,image/jpeg"><strong>فایل را انتخاب کنید</strong><span>PDF، PNG، JPG / JPEG</span><em id="fileName">فایلی انتخاب نشده</em></label>
+<div class="controls"><label>OCR <select id="ocrMode"><option value="auto">خودکار</option><option value="always">اجباری</option><option value="never">بدون OCR</option></select></label><label>زبان <select id="ocrLang"><option value="fas+eng">فارسی + English</option><option value="fas">فارسی</option><option value="eng">English</option></select></label><label>جدول <select id="tableMode"><option value="strict">Strict — فقط شواهد قوی</option><option value="balanced">Balanced</option><option value="off">خاموش</option></select></label><button id="convertBtn" class="primary" disabled>بازسازی و ساخت DOCX</button></div>
+<div class="progress"><div id="progressBar"></div></div><div id="status" class="status">یک فایل انتخاب کنید.</div>
+</section>
+<section class="stats" id="stats"><div><b id="pages">0</b><span>صفحه</span></div><div><b id="ocrPages">0</b><span>OCR</span></div><div><b id="words">0</b><span>کلمه</span></div><div><b id="tables">0</b><span>جدول</span></div><div><b id="confidence">—</b><span>اعتماد</span></div></section>
+<section class="panel"><h2>Document Structure</h2><div id="structure" class="structure">هنوز تحلیلی انجام نشده است.</div></section>
+<section class="panel warning"><b>نکته کیفیت:</b> هیچ نسخه کاملاً مرورگری نمی‌تواند برای هر PDF پیچیده، بازسازی ۱۰۰٪ پیکسلی را تضمین کند. TYPO Real متن PDF را بدون OCR در اولویت می‌گذارد و OCR را فقط در صفحات لازم استفاده می‌کند؛ تشخیص جدول نیز عمداً محافظه‌کارانه است تا متن عادی به‌اشتباه جدول نشود.</section>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs" type="module"></script>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/docx@9.0.2/build/index.umd.js"></script>
+<script type="module" src="js/app.js"></script>
+</body></html>
