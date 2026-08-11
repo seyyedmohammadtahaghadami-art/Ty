@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>TYPO Real v9 — Document Intelligence</title>
+<style>
+:root{--bg:#07101b;--card:#0d1928;--card2:#101f31;--line:#263a55;--text:#f7f9fc;--mut:#9eacc0;--a:#7188ff;--a2:#a86dff;--ok:#31d58b;--warn:#f2c45b;--bad:#ff687a}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:linear-gradient(180deg,#050a12,#081523 55%,#050a12);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif}
+body{padding:16px}.wrap{max-width:1500px;margin:auto}.hero{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:15px}.brand h1{margin:0;font-size:29px}.brand p{margin:5px 0;color:var(--mut);font-size:13px}.badge{border:1px solid var(--line);background:#ffffff08;border-radius:999px;padding:8px 11px;font-size:12px;color:#d4dbea}
+.grid{display:grid;grid-template-columns:390px 1fr;gap:15px}.card{background:linear-gradient(180deg,#0d1928,#0a1522);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 18px 65px #0007}.drop{border:1.5px dashed #5572a2;border-radius:16px;padding:25px 15px;text-align:center;cursor:pointer;background:#ffffff04}.drop.drag{border-color:var(--a);background:#7188ff12}.drop strong{display:block;font-size:18px}.drop small{display:block;color:var(--mut);margin-top:7px}.file{margin-top:10px;padding:10px;border:1px solid #20344d;border-radius:11px;background:#07111d;font-size:12px;word-break:break-word}.field{margin-top:11px}.field label{display:block;color:#cbd4e2;font-size:12px;margin-bottom:5px}.field select,.field input{width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:#08121f;color:#fff}.row{display:grid;grid-template-columns:1fr 1fr;gap:8px}.btn{width:100%;border:1px solid #2b4361;border-radius:11px;padding:11px 12px;background:#17273b;color:#fff;cursor:pointer}.btn.primary{border:0;background:linear-gradient(135deg,#667dff,#9c63e8);font-weight:800}.btn:disabled{opacity:.42;cursor:not-allowed}.actions{display:grid;gap:8px;margin-top:9px}.status{margin-top:13px;padding:11px;border:1px solid #20344d;border-radius:12px;background:#07111d}.bar{height:9px;background:#142135;border-radius:99px;overflow:hidden;margin-top:8px}.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#6d86ff,#b16dff);transition:width .15s}.steps{display:grid;gap:6px;margin-top:10px}.step{display:flex;align-items:center;gap:8px;color:#75859b;font-size:11px}.step b{width:8px;height:8px;border-radius:50%;background:#35475e}.step.active{color:#fff}.step.active b{background:var(--a);box-shadow:0 0 12px #7188ff}.step.done{color:var(--ok)}.step.done b{background:var(--ok)}.hint{font-size:11px;color:var(--mut);line-height:1.8}.main{min-width:0}.toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.toolbar h2{margin:0;font-size:17px}.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:10px}.stat{padding:11px;border:1px solid var(--line);border-radius:13px;background:#ffffff04}.stat span{font-size:10px;color:var(--mut)}.stat strong{display:block;margin-top:3px;font-size:18px}.preview{min-height:560px;max-height:760px;overflow:auto;padding:15px;background:#040910;border:1px solid #1b2c42;border-radius:15px}.page{background:#fff;color:#111;max-width:920px;margin:0 auto 18px;box-shadow:0 12px 35px #0009;position:relative;overflow:hidden}.page>img{display:block;width:100%;height:auto}.ocr{padding:18px 22px;direction:rtl;text-align:right;white-space:pre-wrap;font-family:Tahoma,Arial,sans-serif;line-height:1.85}.pageMeta{font:11px ui-monospace,monospace;color:#718096;background:#f4f6f8;padding:5px 8px;direction:ltr}.log{margin-top:10px;max-height:180px;overflow:auto;background:#040910;border:1px solid #1a2a3f;border-radius:12px;padding:10px;font:11px ui-monospace,monospace;direction:ltr;white-space:pre-wrap}.warning{padding:10px;border-radius:10px;background:#f2c45b12;border:1px solid #8f742a;color:#f6da88;font-size:11px;margin-top:10px}.hidden{display:none!important}
+@media(max-width:950px){body{padding:9px}.grid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.hero{align-items:flex-start;flex-direction:column}.preview{max-height:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="hero">
+ <div class="brand"><h1>TYPO Real <span style="color:#8295ff">v9</span></h1><p>PDF/Image → OCR → Layout → Table Heuristics → Editable DOCX</p></div>
+ <div class="badge">Single HTML • پردازش داخل مرورگر • موتورهای CDN</div>
+</header>
+<div class="grid">
+<section class="card">
+ <input id="file" class="hidden" type="file" accept=".pdf,.png,.jpg,.jpeg,.webp,.bmp,.tif,.tiff,image/*,application/pdf">
+ <div id="drop" class="drop"><strong>فایل را اینجا رها کنید</strong><small>PDF / PNG / JPG / JPEG / WEBP / BMP / TIFF</small><small>یا لمس کنید و فایل را انتخاب کنید</small></div>
+ <div id="fileInfo" class="file">هنوز فایلی انتخاب نشده است.</div>
+ <div class="field"><label>زبان OCR</label><select id="lang"><option value="fas+eng">فارسی + انگلیسی</option><option value="ara+fas+eng">عربی + فارسی + انگلیسی</option><option value="eng">English</option></select></div>
+ <div class="row">
+  <div class="field"><label>کیفیت رندر</label><select id="scale"><option value="1.5">سریع</option><option value="2" selected>متعادل</option><option value="2.7">دقیق</option><option value="3.2">خیلی دقیق</option></select></div>
+  <div class="field"><label>پردازش OCR</label><select id="passes"><option value="1">استاندارد</option><option value="2" selected>دو مرحله‌ای</option><option value="3">سه مرحله‌ای</option></select></div>
+ </div>
+ <div class="field"><label>خروجی DOCX</label><select id="docxMode"><option value="editable">قابل ویرایش + بازسازی ساختار</option><option value="visual">حفظ ظاهری با تصویر صفحه</option><option value="hybrid">ترکیبی: تصویر + متن قابل جستجو</option></select></div>
+ <div class="row" style="margin-top:10px"><button id="start" class="btn primary" disabled>شروع تبدیل واقعی</button><button id="cancel" class="btn" disabled>لغو</button></div>
+ <div class="actions"><button id="docx" class="btn" disabled>دانلود DOCX</button><button id="txt" class="btn" disabled>دانلود TXT</button><button id="htmlout" class="btn" disabled>دانلود HTML</button></div>
+ <div class="status"><div id="statusText">آماده</div><div class="bar"><i id="progress"></i></div>
+  <div class="steps">
+   <div class="step" data-s="load"><b></b>بارگذاری و تشخیص نوع سند</div>
+   <div class="step" data-s="render"><b></b>استخراج متن / رندر صفحه</div>
+   <div class="step" data-s="ocr"><b></b>OCR چندمرحله‌ای و پیش‌پردازش</div>
+   <div class="step" data-s="layout"><b></b>بلوک‌بندی، ستون و جدول</div>
+   <div class="step" data-s="build"><b></b>بازسازی DOCX</div>
+  </div>
+ </div>
+ <p class="hint">نسخه مرورگری است و برای موتورهای PDF/OCR/DOCX به اینترنت نیاز دارد. برای PDF متنی ابتدا متن بومی استخراج می‌شود؛ OCR فقط وقتی لازم باشد یا برای صفحات کم‌متن اجرا می‌شود.</p>
+ <div class="warning">هیچ OCR مرورگری نمی‌تواند برای همه اسناد «۱۰۰٪ بدون خطا» تضمین بدهد. این نسخه برای افزایش دقت، استخراج بومی PDF، چند پیش‌پردازش، OCR چند گذر و استفاده از مختصات کلمات را ترکیب می‌کند.</div>
+</section>
+<section class="main">
+ <div class="toolbar"><h2>پیش‌نمایش و گزارش</h2><span id="engine" class="badge">Engine: idle</span></div>
+ <div class="stats">
+  <div class="stat"><span>صفحات</span><strong id="pages">0</strong></div><div class="stat"><span>کاراکتر</span><strong id="chars">0</strong></div><div class="stat"><span>جداول تقریبی</span><strong id="tables">0</strong></div><div class="stat"><span>OCR pages</span><strong id="ocrpages">0</strong></div><div class="stat"><span>زمان</span><strong id="time">0s</strong></div>
+ </div>
+ <div id="preview" class="preview"><div class="hint">فایل را انتخاب کنید و تبدیل را شروع کنید.</div></div>
+ <div id="log" class="log">[TYPO] engine ready</div>
+</section>
+</div></div>
+
+<script>
+const $=id=>document.getElementById(id);
+const state={file:null,running:false,cancel:false,pages:[],pdf:null,libs:{},start:0};
+
+function log(x){$('log').textContent+=`\\n${new Date().toLocaleTimeString()}  ${x}`;$('log').scrollTop=$('log').scrollHeight}
+function status(x,p=null){$('statusText').textContent=x;if(p!==null)$('progress').style.width=Math.max(0,Math.min(100,p))+'%'}
+function step(s,mode='active'){
+ document.querySelectorAll('.step').forEach(e=>{
+  if(e.dataset.s===s){e.classList.remove('done');e.classList.add(mode)}
+  else if(mode==='active'&&e.classList.contains('active')){e.classList.remove('active');e.classList.add('done')}
+ });
+}
+function setFile(f){
+ if(!f)return;
+ const ok=/^(application\/pdf|image\/(png|jpe?g|webp|bmp|tiff?))$/i.test(f.type)||/\\.(pdf|png|jpe?g|webp|bmp|tiff?)$/i.test(f.name);
+ if(!ok){alert('این نوع فایل پشتیبانی نمی‌شود.');return}
+ state.file=f;state.pages=[];
+ $('fileInfo').textContent=`${f.name} — ${(f.size/1024/1024).toFixed(2)} MB`;
+ $('start').disabled=false;$('docx').disabled=true;$('txt').disabled=true;$('htmlout').disabled=true;
+ $('preview').innerHTML='<div class="hint">فایل آماده پردازش است.</div>';
+ $('pages').textContent='0';$('chars').textContent='0';$('tables').textContent='0';$('ocrpages').textContent='0';
+ log('accepted: '+f.name);status('فایل آماده است',0)
+}
+$('drop').onclick=()=>$('file').click();$('file').onchange=e=>setFile(e.target.files[0]);
+['dragenter','dragover'].forEach(ev=>$('drop').addEventListener(ev,e=>{e.preventDefault();$('drop').classList.add('drag')}));
+['dragleave','drop'].forEach(ev=>$('drop').addEventListener(ev,e=>{e.preventDefault();$('drop').classList.remove('drag')}));
+$('drop').addEventListener('drop',e=>setFile(e.dataTransfer.files[0]));
+$('cancel').onclick=()=>{state.cancel=true;log('cancel requested')};
+
+function loadScript(src, test){
+ return new Promise((res,rej)=>{
+  if(test()){res();return}
+  const s=document.createElement('script');s.src=src;s.async=true;s.onload=()=>test()?res():rej(new Error('کتابخانه بارگذاری شد ولی در دسترس نیست'));s.onerror=()=>rej(new Error('بارگذاری CDN شکست خورد: '+src));document.head.appendChild(s)
+ })
+}
+async function loadEngines(){
+ if(state.libs.loaded)return;
+ status('بارگذاری موتورهای PDF/OCR/DOCX…',5);
+ const pdf=await import('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs');
+ window.pdfjsLib=pdf;pdf.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.mjs';
+ await loadScript('https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js',()=>!!window.Tesseract);
+ await loadScript('https://cdn.jsdelivr.net/npm/docx@9.5.1/build/index.umd.js',()=>!!window.docx);
+ state.libs={loaded:true,pdf};log('engines loaded: PDF.js / Tesseract.js / docx')
+}
+function canvasFromPage(page,scale){
+ const vp=page.getViewport({scale});const c=document.createElement('canvas');c.width=Math.ceil(vp.width);c.height=Math.ceil(vp.height);
+ return {c,vp}
+}
+function canvasToBlob(c,type='image/png',q=.9){return new Promise(r=>c.toBlob(r,type,q))}
+function gray(c,mode='gray'){
+ const o=document.createElement('canvas');o.width=c.width;o.height=c.height;const x=o.getContext('2d',{willReadFrequently:true});x.drawImage(c,0,0);
+ const im=x.getImageData(0,0,o.width,o.height),d=im.data;
+ for(let i=0;i<d.length;i+=4){
+  let y=.299*d[i]+.587*d[i+1]+.114*d[i+2];
+  if(mode==='contrast')y=(y-128)*1.35+128;
+  if(mode==='binary')y=y>170?255:0;
+  y=Math.max(0,Math.min(255,y));d[i]=d[i+1]=d[i+2]=y
+ }
+ x.putImageData(im,0,0);return o
+}
+function normalize(s){
+ return (s||'').replace(/\\u00ad/g,'').replace(/\\u200b/g,'').replace(/[\\u200c]{2,}/g,'\\u200c')
+ .replace(/[ \\t]+/g,' ').replace(/ *\\n */g,'\\n').replace(/\\n{3,}/g,'\\n\\n').trim()
+}
+function rtlText(s){return /[\\u0600-\\u06ff]/.test(s)}
+function orderWords(words){
+ const clean=(words||[]).filter(w=>w.text&&w.text.trim()&&w.confidence!==0);
+ const rows=[];const tol=16;
+ for(const w of clean){
+  const cy=(w.bbox.y0+w.bbox.y1)/2;let r=rows.find(r=>Math.abs(r.cy-cy)<tol);
+  if(!r){r={cy,words:[]};rows.push(r)}r.words.push(w)
+ }
+ rows.sort((a,b)=>a.cy-b.cy);
+ for(const r of rows){
+  const rtl=r.words.filter(w=>rtlText(w.text)).length>=r.words.length/2;
+  r.words.sort((a,b)=>rtl?b.bbox.x0-a.bbox.x0:a.bbox.x0-b.bbox.x0)
+ }
+ return rows.map(r=>r.words.map(w=>w.text).join(' ').replace(/\\s+([،؛,:.!?؟])/g,'$1')).join('\\n')
+}
+function tableHeuristic(data,text){
+ const lines=(text||'').split('\\n').filter(Boolean);let score=0;
+ for(let i=0;i<lines.length;i++){
+  const a=(lines[i].match(/\\s{2,}|\\t|\\|/g)||[]).length;
+  const b=(lines[i+1]?.match(/\\s{2,}|\\t|\\|/g)||[]).length;
+  if(a>=2&&b>=2)score++
+ }
+ const words=data?.words||[];const rows={};
+ words.forEach(w=>{const y=Math.round(((w.bbox.y0+w.bbox.y1)/2)/12);rows[y]=(rows[y]||0)+1});
+ const dense=Object.values(rows).filter(v=>v>=4).length;
+ return Math.min(50,Math.max(0,Math.round(score*.7+dense*.08)))
+}
+function nativePDFText(content){
+ const items=(content.items||[]).filter(x=>x.str&&x.str.trim());
+ if(!items.length)return '';
+ const rows=[];for(const it of items){
+  const y=it.transform?.[5]??0;let r=rows.find(r=>Math.abs(r.y-y)<3);
+  if(!r){r={y,items:[]};rows.push(r)}r.items.push(it)
+ }
+ rows.sort((a,b)=>b.y-a.y);
+ return normalize(rows.map(r=>{
+  const rtl=r.items.some(i=>rtlText(i.str));r.items.sort((a,b)=>rtl?(b.transform[4]-a.transform[4]):(a.transform[4]-b.transform[4]));
+  return r.items.map(i=>i.str).join(' ')
+ }).join('\\n'))
+}
+function previewPage(p){
+ const el=document.createElement('div');el.className='page';el.id='page-'+p.num;
+ const meta=document.createElement('div');meta.className='pageMeta';meta.textContent=`PAGE ${p.num} • ${p.source==='native'?'native PDF text':'OCR'}`;el.appendChild(meta);
+ const im=document.createElement('img');im.src=p.canvas.toDataURL('image/jpeg',.78);el.appendChild(im);
+ const o=document.createElement('div');o.className='ocr';o.textContent=p.text||'(متنی شناسایی نشد)';el.appendChild(o);
+ $('preview').appendChild(el)
+}
+function refreshStats(){ $('chars').textContent=state.pages.reduce((n,p)=>n+p.text.length,0).toLocaleString('fa-IR');$('tables').textContent=state.pages.reduce((n,p)=>n+p.tables,0).toLocaleString('fa-IR') }
+async function processPDF(){
+ const data=await state.file.arrayBuffer();const pdf=await pdfjsLib.getDocument({data}).promise;state.pdf=pdf;
+ $('pages').textContent=pdf.numPages;state.pages=[];$('preview').innerHTML='';
+ for(let i=1;i<=pdf.numPages;i++){
+  if(state.cancel)throw new Error('CANCELLED');
+  step('render');status(`تحلیل صفحه ${i} از ${pdf.numPages}`,10+(i-1)/pdf.numPages*25);
+  const page=await pdf.getPage(i),content=await page.getTextContent(),native=nativePDFText(content);
+  const {c}=canvasFromPage(page,+$('scale').value);await page.render({canvasContext:c.getContext('2d'),viewport:page.getViewport({scale:+$('scale').value})}).promise;
+  const p={num:i,canvas:c,text:native,tables:0,source:native.length>30?'native':'ocr',ocrData:null};
+  state.pages.push(p);previewPage(p)
+ }
+ await ocrPages()
+}
+async function processImage(){
+ const url=URL.createObjectURL(state.file),img=new Image();img.src=url;await img.decode();URL.revokeObjectURL(url);
+ const sc=Math.max(1,+$('scale').value),c=document.createElement('canvas');c.width=Math.round(img.naturalWidth*sc);c.height=Math.round(img.naturalHeight*sc);c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+ state.pages=[{num:1,canvas:c,text:'',tables:0,source:'ocr',ocrData:null}];$('pages').textContent='1';$('preview').innerHTML='';previewPage(state.pages[0]);await ocrPages()
+}
+async function ocrPages(){
+ const need=state.pages.filter(p=>p.source==='ocr');$('ocrpages').textContent=need.length.toLocaleString('fa-IR');
+ if(!need.length){refreshStats();return}
+ step('ocr');const worker=await Tesseract.createWorker($('lang').value,1,{logger:m=>{
+  if(m.status==='recognizing text')log(`OCR ${Math.round((m.progress||0)*100)}%`)
+ }});
+ try{
+  const passes=+$('passes').value;
+  for(let k=0;k<need.length;k++){
+   if(state.cancel)throw new Error('CANCELLED');const p=need[k];let best={text:'',conf:-1,data:null};
+   for(let pass=0;pass<passes;pass++){
+    if(state.cancel)throw new Error('CANCELLED');
+    const mode=pass===0?'gray':pass===1?'contrast':'binary';const pc=gray(p.canvas,mode);
+    status(`OCR صفحه ${p.num} — گذر ${pass+1} از ${passes}`,35+(k/need.length)*48+(pass/passes)*(48/need.length));
+    const r=await worker.recognize(pc);const text=normalize(orderWords(r.data.words)||r.data.text);
+    const conf=Number(r.data.confidence||0);
+    if(conf>best.conf||text.length>best.text.length&&conf>=best.conf-3)best={text,conf,data:r.data}
+   }
+   p.text=best.text;p.ocrData=best.data;p.tables=tableHeuristic(best.data,p.text);
+   const box=$('page-'+p.num+' .ocr');if(box)box.textContent=p.text||'(متنی شناسایی نشد)';
+   refreshStats();log(`page ${p.num}: OCR confidence ${best.conf.toFixed(1)}`)
+  }
+ }finally{await worker.terminate()}
+}
+function escapeHTML(s){return String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+async function buildDOCX(){
+ const {Document,Packer,Paragraph,TextRun,ImageRun,PageBreak,Table,TableRow,TableCell}=window.docx;
+ const mode=$('docxMode').value,children=[];
+ for(let i=0;i<state.pages.length;i++){
+  const p=state.pages[i];
+  if(mode==='visual'||mode==='hybrid'){
+   const blob=await canvasToBlob(p.canvas,'image/png');const buf=await blob.arrayBuffer();
+   children.push(new Paragraph({children:[new ImageRun({data:buf,transformation:{width:650,height:Math.round(650*p.canvas.height/p.canvas.width)}})]}));
+   if(mode==='hybrid'&&p.text)children.push(new Paragraph({children:[new TextRun({text:p.text,font:rtlText(p.text)?'Tahoma':'Arial',size:20})]}));
+  }else{
+   const lines=p.text.split('\\n').filter(x=>x.trim());
+   for(const line of lines){
+    const rtl=rtlText(line);children.push(new Paragraph({bidirectional:rtl,alignment:rtl?'right':'left',spacing:{after:90},children:[new TextRun({text:line,font:rtl?'Tahoma':'Arial',size:22})]}))
+   }
+  }
+  if(i<state.pages.length-1)children.push(new Paragraph({children:[new PageBreak()]}))
+ }
+ const doc=new Document({sections:[{properties:{page:{margin:{top:650,right:700,bottom:650,left:700}}},children}]});
+ return Packer.toBlob(doc)
+}
+function downloadBlob(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),5000)}
+$('docx').onclick=async()=>{try{$('docx').disabled=true;status('ساخت DOCX…',96);downloadBlob(await buildDOCX(),state.file.name.replace(/\.[^.]+$/,'')+'.docx');status('DOCX آماده است',100)}catch(e){alert('ساخت DOCX شکست خورد: '+e.message);log(e.stack||e)}finally{$('docx').disabled=false}};
+$('txt').onclick=()=>downloadBlob(new Blob([state.pages.map((p,i)=>`===== PAGE ${i+1} =====\\n${p.text}`).join('\\n\\n')],{type:'text/plain;charset=utf-8'}),'TYPO-output.txt');
+$('htmlout').onclick=()=>{const body=state.pages.map(p=>`<section><img src="${p.canvas.toDataURL('image/jpeg',.8)}"><pre>${escapeHTML(p.text)}</pre></section>`).join('');const h=`<!doctype html><html lang="fa" dir="rtl"><meta charset="utf-8"><title>TYPO Output</title><style>body{font-family:Tahoma;background:#eee;margin:0}section{max-width:900px;margin:20px auto;background:#fff;padding:20px;box-shadow:0 5px 20px #999}img{width:100%}pre{white-space:pre-wrap;line-height:1.9}</style>${body}</html>`;downloadBlob(new Blob([h],{type:'text/html;charset=utf-8'}),'TYPO-output.html')};
+$('start').onclick=async()=>{
+ if(!state.file||state.running)return;state.running=true;state.cancel=false;$('start').disabled=true;$('cancel').disabled=false;$('preview').innerHTML='';state.start=performance.now();$('engine').textContent='Engine: loading…';
+ try{
+  step('load');await loadEngines();status('فایل معتبر است',10);
+  if(state.file.type==='application/pdf'||/\.pdf$/i.test(state.file.name))await processPDF();else await processImage();
+  step('layout');status('تحلیل ساختار و جدول‌ها…',88);await new Promise(r=>setTimeout(r,150));
+  step('build');status('بازسازی خروجی…',94);await new Promise(r=>setTimeout(r,150));
+  $('engine').textContent='Engine: complete';$('docx').disabled=false;$('txt').disabled=false;$('htmlout').disabled=false;status('تبدیل با موفقیت پایان یافت',100);log('conversion complete')
+ }catch(e){status(e.message==='CANCELLED'?'عملیات لغو شد':'خطا: '+e.message,0);$('engine').textContent='Engine: error';log(e.stack||String(e));if(e.message!=='CANCELLED')alert('تبدیل با خطا متوقف شد. گزارش پایین صفحه را بررسی کنید.')}
+ finally{state.running=false;$('cancel').disabled=true;$('start').disabled=!state.file;$('time').textContent=((performance.now()-state.start)/1000).toFixed(1)+'s'}
+};
+</script>
+</body></html>
