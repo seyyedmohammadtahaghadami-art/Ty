@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07111f">
+<meta name="description" content="TYPO Real — موتور بازسازی ساختاری PDF و تصویر به DOCX با OCR فارسی و انگلیسی">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="assets/icons/icon.svg">
+<link rel="stylesheet" href="css/style.css">
+<title>TYPO Real — Document Reconstruction Engine</title>
+</head>
+<body>
+<div class="bg-orb orb-a"></div><div class="bg-orb orb-b"></div>
+<header class="topbar">
+  <div class="brand"><img src="assets/icons/icon.svg" alt="TYPO Real"><div><b>TYPO Real</b><small>Real Document Reconstruction Engine</small></div></div>
+  <div class="top-actions"><span id="engineState" class="pill"><i></i>در حال اتصال</span><button id="settingsBtn" class="icon-btn" type="button" aria-label="تنظیمات">⚙</button></div>
+</header>
+<main>
+<section class="hero">
+  <div class="hero-copy"><span class="eyebrow">PDF / PNG / JPG → DOCX</span><h1>مبدل واقعی و حرفه‌ای سند</h1><p>استخراج متن مستقیم، OCR چندلایه برای اسکن، بازسازی RTL/LTR، فونت و اندازه، پاراگراف، صفحه‌بندی و جدول؛ پردازش واقعی روی سرور و بدون API هوش مصنوعی خارجی.</p><div class="hero-tags"><span>OCR فارسی + English</span><span>PDF متنی + اسکن</span><span>DOCX واقعی</span><span>Server-side</span></div></div>
+</section>
+<section class="panel workspace">
+  <div class="section-head"><div><h2>۱. فایل ورودی</h2><p>فایل را بکشید و رها کنید یا از حافظه دستگاه انتخاب کنید.</p></div><span class="limit">حداکثر <b id="maxUpload">75 MB</b></span></div>
+  <label class="drop" id="dropZone" tabindex="0">
+    <input id="fileInput" type="file" accept=".pdf,.png,.jpg,.jpeg,application/pdf,image/png,image/jpeg">
+    <div class="upload-icon">↑</div><strong>فایل را اینجا رها کنید</strong><span>یا برای انتخاب فایل لمس کنید</span><em id="fileName">PDF، PNG، JPG / JPEG</em>
+  </label>
+  <div class="file-meta" id="fileMeta" hidden><span id="fileType">—</span><span id="fileSize">—</span><button id="removeFile" type="button">حذف فایل</button></div>
+</section>
+<section class="panel">
+  <div class="section-head"><div><h2>۲. موتور بازسازی</h2><p>سطح پردازش را متناسب با سند انتخاب کنید.</p></div><span id="serverStatus" class="server-status">در حال بررسی سرور…</span></div>
+  <div class="controls">
+    <label><span>OCR</span><select id="ocrMode"><option value="auto">خودکار و هوشمند</option><option value="always">اجباری برای همه صفحات</option><option value="never">فقط استخراج متن PDF</option></select></label>
+    <label><span>زبان</span><select id="ocrLang"><option value="fas+eng">فارسی + English</option><option value="fas">فارسی</option><option value="eng">English</option></select></label>
+    <label><span>تشخیص جدول</span><select id="tableMode"><option value="strict">Strict — شواهد قوی</option><option value="balanced">Balanced — متعادل</option><option value="off">خاموش</option></select></label>
+    <label><span>کیفیت OCR</span><select id="ocrQuality"><option value="high">High — دقیق‌تر</option><option value="balanced" selected>Balanced</option><option value="fast">Fast — سریع‌تر</option></select></label>
+  </div>
+  <div class="advanced-row"><label class="check"><input id="preserveStyle" type="checkbox" checked><span>حفظ سبک متن و اندازه فونت</span></label><label class="check"><input id="smartParagraphs" type="checkbox" checked><span>بازسازی هوشمند پاراگراف و فاصله‌ها</span></label><label class="check"><input id="safeTables" type="checkbox" checked><span>جلوگیری از جدول‌سازی اشتباه</span></label></div>
+  <button id="convertBtn" class="primary big" disabled><span>بازسازی واقعی و ساخت DOCX</span><small>پردازش روی سرور</small></button>
+  <div class="progress-wrap"><div class="progress-label"><span id="progressText">آماده</span><b id="progressPercent">0%</b></div><div id="progress" class="progress"><div id="progressBar"></div></div></div>
+  <div id="status" class="status">یک فایل انتخاب کنید.</div>
+</section>
+<section class="stats" id="stats">
+  <div><b id="pages">0</b><span>صفحه</span></div><div><b id="ocrPages">0</b><span>صفحه OCR</span></div><div><b id="words">0</b><span>کلمه</span></div><div><b id="tables">0</b><span>جدول</span></div><div><b id="confidence">—</b><span>اعتماد OCR</span></div>
+</section>
+<section class="panel structure-panel"><div class="section-head"><div><h2>ساختار سند</h2><p>خلاصه نتیجه پردازش آخر.</p></div><span id="processingTime" class="muted">—</span></div><div id="structure" class="structure"><div class="empty-state">هنوز تحلیلی انجام نشده است.</div></div></section>
+<section class="panel quality"><div class="quality-title">ℹ️ کیفیت و محدودیت واقعی</div><p>این موتور صفحه را به‌صورت ساختاری بازسازی می‌کند؛ هدف آن ساخت DOCX قابل ویرایش است، نه قرار دادن تصویر PDF داخل Word. متن PDF ابتدا مستقیم استخراج می‌شود و صفحات کم‌کیفیت یا اسکن‌شده با Tesseract OCR پردازش می‌شوند. برای اسناد پیچیده، نتیجه به ساختار واقعی فایل، کیفیت اسکن و فونت‌های موجود روی سرور وابسته است.</p></section>
+</main>
+<dialog id="settingsDialog"><form method="dialog"><div class="dialog-head"><h3>تنظیمات اتصال</h3><button value="cancel" class="icon-btn">×</button></div><label>آدرس Backend<input id="apiBaseInput" type="url" placeholder="خالی = همین دامنه"></label><p>در حالت سرور یکپارچه، این مقدار را خالی بگذارید. برای Backend جداگانه، آدرس HTTPS آن را وارد کنید.</p><div class="dialog-actions"><button value="cancel" class="secondary">انصراف</button><button id="saveSettings" value="default" class="primary">ذخیره</button></div></form></dialog>
+<script type="module" src="js/app.js"></script>
+</body></html>
